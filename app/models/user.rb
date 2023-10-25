@@ -8,7 +8,7 @@
 #  encrypted_password     :string           default(""), not null
 #  likes_count            :integer          default(0)
 #  photos_count           :integer
-#  private                :boolean
+#  private                :boolean          default(TRUE)
 #  remember_created_at    :datetime
 #  reset_password_sent_at :datetime
 #  reset_password_token   :string
@@ -28,7 +28,7 @@ class User < ApplicationRecord
   devise :database_authenticatable, :registerable,
          :recoverable, :rememberable, :validatable
   has_many :own_photos, foreign_key: :owner_id, class_name: "Photo"
-  has_many :comments, foreign_key: "author_id"indirect 
+  has_many :comments, foreign_key: "author_id"
 
   has_many :sent_follow_requests, foreign_key: :sender_id, class_name: "FollowRequest"
 
@@ -49,4 +49,6 @@ class User < ApplicationRecord
   has_many :feed, through: :leaders, source: :own_photos
 
   has_many :discover, through: :leaders, source: :liked_photos
+
+  validates :username, presence: true, uniqueness: true
 end
