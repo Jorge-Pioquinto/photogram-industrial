@@ -1,6 +1,7 @@
 desc "Fill the database tables with some sample data"
 task({ :sample_data => :environment }) do
   p "Creating sample data"
+  starting = Time.now
 
   if Rails.env.development?
     FollowRequest.destroy_all
@@ -10,6 +11,20 @@ task({ :sample_data => :environment }) do
     User.destroy_all
   end
 
+  usernames = Array.new { Faker::Name.first_name }
+
+  usernames << "alice"
+  usernames << "bob"
+
+  usernames.each do |username|
+    User.create(
+      email: "#{username}@example.com",
+      password: "password",
+      username: username.downcase,
+      private: [true, false].sample,
+    )
+  end
+  
   12.times do
     name = Faker::Games::SuperSmashBros.fighter
     User.create(
