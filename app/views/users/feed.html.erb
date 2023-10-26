@@ -4,9 +4,10 @@
       <%= @user.username %>
     </h1>
   </div>
-      <%= render partial: "shared/navs" %>
+        <%= render partial: "shared/navs" %>
 </div>
 
-<% @user.liked_photos.each do |photo| %>
+
+<% @user.feed.each do |photo| %>
   <%= render "photos/photo", photo: photo %>
   <% end %>
